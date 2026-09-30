@@ -96,16 +96,20 @@
           <span class="lot">@bkloaf</span>
           <h2 class="title">From the counter.</h2>
         </div>
-        <div class="gallery-grid">
-          <figure>
-            <img src="images/post-1-about.png" alt="Brooklyn Loaf — About" />
-          </figure>
-          <figure>
-            <img src="images/post-2-the-class.png" alt="Brooklyn Loaf — The class" />
-          </figure>
-          <figure>
-            <img src="images/post-3-upstate-teaser.png" alt="Brooklyn Loaf — Something's proofing upstate" />
-          </figure>
+        <div class="carousel">
+          <button class="carousel-btn carousel-prev" aria-label="Previous photo" type="button">‹</button>
+          <div class="carousel-track">
+            <figure class="carousel-slide">
+              <img src="images/post-1-about.png" alt="Brooklyn Loaf — About" />
+            </figure>
+            <figure class="carousel-slide">
+              <img src="images/post-2-the-class.png" alt="Brooklyn Loaf — The class" />
+            </figure>
+            <figure class="carousel-slide">
+              <img src="images/post-3-upstate-teaser.png" alt="Brooklyn Loaf — Something's proofing upstate" />
+            </figure>
+          </div>
+          <button class="carousel-btn carousel-next" aria-label="Next photo" type="button">›</button>
         </div>
       </div>
     </section>
@@ -121,7 +125,7 @@
             <p>Not a class — a bread social at The Garage in Kingston. Warm sourdough, good butter, a live bake, and a jar of starter to take home.</p>
             <div class="ticket-row"><span class="k">Date</span><span class="v">Sat 21 Nov</span></div>
             <div class="ticket-row"><span class="k">Time</span><span class="v">6–9pm</span></div>
-            <div class="ticket-row"><span class="k">Where</span><span class="v">The Garage · Kingston, NY</span></div>
+            <div class="ticket-row"><span class="k">Where</span><span class="v">Kingston, NY</span></div>
             <div class="ticket-row"><span class="k">Details</span><span class="v">More to come</span></div>
             <form name="upstate-notify" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="cta-row notify-form" style="margin-top: var(--space-6);">
               <input type="hidden" name="form-name" value="upstate-notify" />
@@ -148,6 +152,15 @@
   </footer>
 
   <script>
+    document.querySelectorAll('.carousel').forEach(function (carousel) {
+      var track = carousel.querySelector('.carousel-track');
+      var prev = carousel.querySelector('.carousel-prev');
+      var next = carousel.querySelector('.carousel-next');
+      var step = function () { return track.clientWidth * 0.9; };
+      prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+      next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
+    });
+
     document.querySelectorAll('form[data-netlify="true"]').forEach(function (form) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
