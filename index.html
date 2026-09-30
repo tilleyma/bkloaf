@@ -62,19 +62,20 @@
     <section id="classes">
       <div class="wrap">
         <div class="section-head">
-          <span class="lot">Next class</span>
+          <span class="lot">Classes &amp; socials</span>
           <h2 class="title">Sourdough, start to loaf.</h2>
         </div>
         <div class="classes-grid">
-          <div class="ticket">
+          <div class="ticket is-sold-out">
+            <div class="sold-band">SOLD OUT</div>
             <h3 class="card-title">The class</h3>
             <p>You'll mix, fold, laminate, shape and score, then take your loaf home in a banneton and bake it Sunday morning.</p>
             <div class="ticket-row"><span class="k">Date</span><span class="v">Sat 24 Oct</span></div>
             <div class="ticket-row"><span class="k">Time</span><span class="v">12–4pm</span></div>
-            <div class="ticket-row"><span class="k">Spots</span><span class="v">10</span></div>
+            <div class="ticket-row"><span class="k">Spots</span><span class="v">10 · sold out</span></div>
             <div class="ticket-row"><span class="k">You leave with</span><span class="v">1 loaf + your own starter</span></div>
             <div class="cta-row" style="margin-top: var(--space-6);">
-              <a class="btn btn-primary" href="#contact">DM to book</a>
+              <a class="btn btn-primary" href="#contact">Join the waitlist</a>
             </div>
           </div>
           <div class="ticket">
@@ -113,9 +114,23 @@
       <div class="wrap">
         <div class="teaser">
           <span class="lot">LOT KGN-11·26</span>
-          <h2 class="title">Something's proofing upstate.</h2>
-          <p>Kingston, NY. November. It's not a bakery and not a market, there are no loaves for sale, and there are very few spots. <span class="redacted">What: [redacted]</span> — details land here first.</p>
-          <a class="btn btn-primary" href="#contact" style="border-color: var(--amber); background: var(--amber); color: var(--char);">Get notified</a>
+          <h2 class="title">It's happening.</h2>
+          <div class="ticket is-upcoming" style="text-align: left; max-width: 420px; margin: var(--space-6) auto 0;">
+            <span class="status">Save the date</span>
+            <h3 class="card-title">The Proof Party</h3>
+            <p>Not a class — a bread social at The Garage in Kingston. Warm sourdough, good butter, a live bake, and a jar of starter to take home.</p>
+            <div class="ticket-row"><span class="k">Date</span><span class="v">Sat 21 Nov</span></div>
+            <div class="ticket-row"><span class="k">Time</span><span class="v">6–9pm</span></div>
+            <div class="ticket-row"><span class="k">Where</span><span class="v">The Garage · Kingston, NY</span></div>
+            <div class="ticket-row"><span class="k">Details</span><span class="v">More to come</span></div>
+            <form name="upstate-notify" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="cta-row notify-form" style="margin-top: var(--space-6);">
+              <input type="hidden" name="form-name" value="upstate-notify" />
+              <p class="hidden" hidden><label>Don't fill this out if you're human: <input name="bot-field" /></label></p>
+              <input class="field-visible" type="email" name="email" required placeholder="you@email.com" />
+              <button type="submit" class="btn btn-primary field-visible">Get notified</button>
+              <span class="sent-note">You're on the list — see you in Kingston.</span>
+            </form>
+          </div>
         </div>
       </div>
     </section>
@@ -131,6 +146,24 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    document.querySelectorAll('form[data-netlify="true"]').forEach(function (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var data = new FormData(form);
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(data).toString()
+        }).then(function () {
+          form.classList.add('is-sent');
+        }).catch(function () {
+          form.submit();
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>
