@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pumpkin Cinnamon Roll Focaccia — Brooklyn Loaf</title>
+  <meta name="description" content="What's in the Brooklyn Loaf pumpkin cinnamon roll focaccia: allergens, dietary notes and ingredients. Lot 30·09·26, Salon Salon concert &amp; potluck." />
+  <meta property="og:title" content="Pumpkin Cinnamon Roll Focaccia — Brooklyn Loaf" />
+  <meta property="og:description" content="Allergens, dietary notes and ingredients for tonight's bake." />
+  <link rel="icon" type="image/svg+xml" href="/images/bkloaf-monogram.svg" />
+<style>
+/* Layout: one narrow shipping-label column. Char hero, then stacked tickets with dashed separators. Square corners throughout. */
+:root {
+  --ground: #eee5d3;
+  --panel: #e6dbc6;
+  --ink: #1c1814;
+  --ink-muted: #675a4c;
+  --rust: #a83f1b;
+  --line: #cdbfa5;
+  --char: #1c1814;
+  --sack: #eee5d3;
+  --amber: #e39a36;
+  --rust-block: #a83f1b;
+
+  --stencil: "Big Shoulders Stencil Display", Impact, sans-serif;
+  --display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --sans: Archivo, system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #1c1814; --panel: #2a241e; --ink: #eee5d3; --ink-muted: #b3a48e;
+    --rust: #e0673a; --line: #3a332c; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #1c1814; --panel: #2a241e; --ink: #eee5d3; --ink-muted: #b3a48e;
+  --rust: #e0673a; --line: #3a332c; color-scheme: dark;
+}
+
+@font-face { font-family: "Big Shoulders Stencil Display"; font-weight: 900; font-display: swap; src: url("/fonts/big-shoulders-stencil-display-latin-900-normal.woff2") format("woff2"); }
+@font-face { font-family: "Big Shoulders Display"; font-weight: 900; font-display: swap; src: url("/fonts/big-shoulders-display-latin-900-normal.woff2") format("woff2"); }
+@font-face { font-family: "Big Shoulders Display"; font-weight: 800; font-display: swap; src: url("/fonts/big-shoulders-display-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: Archivo; font-weight: 400; font-display: swap; src: url("/fonts/archivo-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: Archivo; font-weight: 700; font-display: swap; src: url("/fonts/archivo-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-weight: 500; font-display: swap; src: url("/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-weight: 600; font-display: swap; src: url("/fonts/ibm-plex-mono-latin-600-normal.woff2") format("woff2"); }
+
+* { box-sizing: border-box; }
+img { max-width: 100%; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 24px;
+  padding-inline: 16px;
+  padding-block: 16px 48px;
+}
+.page { max-width: 560px; margin-inline: auto; display: flex; flex-direction: column; gap: 24px; }
+p, h1, h2, ul, dl, dd { margin: 0; }
+ul { padding: 0; list-style: none; }
+
+.label {
+  font-family: var(--mono); font-weight: 600; font-size: 12px; line-height: 16px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+.title {
+  font-family: var(--display); font-weight: 800; font-size: 22px; line-height: 1.05;
+  letter-spacing: 0.02em; text-transform: uppercase; color: var(--rust); text-wrap: balance;
+}
+
+/* Hero: fixed char block in both themes */
+.hero {
+  background: var(--char); color: var(--sack);
+  padding: 24px 20px 28px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.hero-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.hero-top img { width: 132px; height: auto; display: block; }
+.hero-top a { display: block; flex: none; }
+.hero-top a:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
+.hero-top img.salon { width: min(168px, 46%); }
+.hero .kicker { color: var(--amber); margin-bottom: -8px; }
+.hero h1 {
+  font-family: var(--stencil); font-weight: 900; text-transform: uppercase;
+  font-size: clamp(46px, 14.5vw, 76px); line-height: 0.88; text-wrap: balance;
+}
+.hero h1 span { color: var(--amber); display: block; }
+.hero p { max-width: 42ch; }
+
+/* Tickets */
+.ticket { border: 4px solid var(--ink); display: flex; flex-direction: column; }
+.ticket > * { padding: 16px; }
+.ticket > * + * { border-top: 1.5px dashed var(--ink); }
+.ticket-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.ticket-head .label { color: var(--ink-muted); }
+
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font-family: var(--display); font-weight: 900; font-size: 26px; line-height: 1;
+  text-transform: uppercase; letter-spacing: 0.02em; padding: 8px 12px 9px;
+}
+.chip small { font-family: var(--mono); font-weight: 600; font-size: 11px; letter-spacing: 0.12em; display: block; margin-top: 4px; }
+.chip.has { background: var(--rust-block); color: var(--sack); }
+.chip.none {
+  font-family: var(--mono); font-weight: 500; font-size: 13px; line-height: 18px;
+  letter-spacing: 0.06em; border: 1.5px solid var(--line); color: var(--ink); padding: 4px 8px;
+}
+
+.diet { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; }
+.diet > div { display: contents; }
+.diet dt, .diet dd { padding-block: 9px; border-top: 1.5px solid var(--line); min-width: 0; }
+.diet > div:first-child dt, .diet > div:first-child dd { border-top: 0; padding-top: 0; }
+.diet > div:last-child dt, .diet > div:last-child dd { padding-bottom: 0; }
+.diet dt { font-family: var(--mono); font-weight: 600; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; display: flex; align-items: baseline; gap: 8px; }
+.diet dt::before { content: ""; width: 10px; height: 10px; flex: none; border: 2px solid var(--ink); align-self: center; }
+.diet .yes dt::before { background: var(--ink); }
+.diet .no dt { color: var(--rust); }
+.diet .no dt::before { border-color: var(--rust); }
+.diet dd b { font-weight: 700; }
+.diet dd span { color: var(--ink-muted); }
+
+.small { font-size: 13px; line-height: 19px; color: var(--ink-muted); }
+.small a { color: inherit; }
+.note { border: 1.5px dashed var(--ink); padding: 12px 16px; }
+.note b { font-weight: 700; }
+
+/* Salon Salon: fixed char block, bordered so it holds its edge on the dark ground */
+.venue { background: var(--char); color: var(--sack); border: 4px solid var(--ink); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.venue .label { color: var(--amber); }
+.venue h2 { font-family: var(--display); font-weight: 900; font-size: clamp(36px, 10.5vw, 52px); line-height: 0.95; text-transform: uppercase; }
+.venue .btn { border-color: var(--sack); color: var(--sack); }
+.venue .btn:focus-visible { outline-color: var(--amber); }
+
+/* Class promo: panel block */
+.promo { background: var(--panel); padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; }
+.promo .label { color: var(--rust); }
+.promo h2 {
+  font-family: var(--display); font-weight: 900; font-size: clamp(36px, 10.5vw, 52px); line-height: 0.95;
+  text-transform: uppercase; text-wrap: balance;
+}
+.promo h2 em { font-style: normal; color: var(--rust); }
+.facts { font-family: var(--mono); font-weight: 500; font-size: 14px; line-height: 20px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  font-family: var(--mono); font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+  text-decoration: none; padding: 14px 18px; border: 4px solid var(--ink); color: var(--ink);
+  flex: 1 1 200px; text-align: center;
+}
+.btn.primary { background: var(--rust-block); border-color: var(--rust-block); color: var(--sack); }
+.btn:focus-visible, .small a:focus-visible { outline: 3px solid var(--rust); outline-offset: 3px; }
+
+.signoff { display: flex; align-items: center; gap: 16px; }
+.signoff img { width: 96px; height: 96px; flex: none; transform: rotate(-3deg); }
+.signoff p { font-family: var(--display); font-weight: 800; font-size: 22px; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.02em; }
+.signoff .small { font-family: var(--sans); font-weight: 400; text-transform: none; letter-spacing: 0; margin-top: 6px; }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header class="hero">
+    <div class="hero-top">
+      <a href="/" aria-label="Brooklyn Loaf home"><img src="/images/bkloaf-stamp-reverse.svg" alt="Brooklyn Loaf"></a>
+      <img class="salon" src="/images/salon-salon.png" alt="Salon Salon">
+    </div>
+    <p class="label kicker">Lot 30·09·26 · Concert &amp; potluck</p>
+    <h1>Pumpkin cinnamon roll <span>focaccia.</span></h1>
+    <p>Soft pumpkin focaccia folded around brown sugar and cinnamon, baked in butter and glazed with honey while it's still hot. Baked today by Martin for the Salon Salon concert &amp; potluck.</p>
+  </header>
+
+  <section class="ticket" aria-labelledby="allergens">
+    <div class="ticket-head">
+      <h2 class="title" id="allergens">Allergens</h2>
+      <p class="label">Read before you eat</p>
+    </div>
+    <div class="stack">
+      <p class="label">Contains</p>
+      <div class="chips">
+        <p class="chip has">Wheat<small>Gluten · flour</small></p>
+        <p class="chip has">Milk<small>Butter · milk</small></p>
+      </div>
+    </div>
+    <div class="stack">
+      <p class="label">Not in the recipe</p>
+      <ul class="chips">
+        <li class="chip none">Egg</li>
+        <li class="chip none">Peanuts</li>
+        <li class="chip none">Tree nuts</li>
+        <li class="chip none">Soy</li>
+        <li class="chip none">Sesame</li>
+        <li class="chip none">Fish</li>
+        <li class="chip none">Shellfish</li>
+      </ul>
+    </div>
+  </section>
+
+  <p class="note"><b>Serious allergy? Ask Martin first.</b> This was baked in a home kitchen, not an allergen-free one, so traces of other foods can't be ruled out.</p>
+
+  <section class="ticket" aria-labelledby="diet">
+    <div class="ticket-head">
+      <h2 class="title" id="diet">Dietary</h2>
+      <p class="label">Is it for you</p>
+    </div>
+    <dl class="diet">
+      <div class="yes"><dt>Vegetarian</dt><dd><b>Yes.</b></dd></div>
+      <div class="yes"><dt>Egg-free</dt><dd><b>Yes.</b></dd></div>
+      <div class="yes"><dt>Nut-free</dt><dd><b>No nuts in the recipe.</b> <span>Home kitchen, see above.</span></dd></div>
+      <div class="no"><dt>Vegan</dt><dd><b>No.</b> <span>Butter, milk and honey.</span></dd></div>
+      <div class="no"><dt>Dairy-free</dt><dd><b>No.</b> <span>Butter in the pan, butter and milk in the glaze.</span></dd></div>
+      <div class="no"><dt>Gluten-free</dt><dd><b>No.</b> <span>500 g of wheat flour.</span></dd></div>
+    </dl>
+  </section>
+
+  <section class="ticket" aria-labelledby="inside">
+    <div class="ticket-head">
+      <h2 class="title" id="inside">What's in it</h2>
+      <p class="label">14 ingredients</p>
+    </div>
+    <div class="stack">
+      <p>Wheat flour, pumpkin puree, water, brown sugar, butter, powdered sugar, honey, olive oil, milk, yeast, vanilla extract, cinnamon, pumpkin pie spice, salt.</p>
+      <p class="small">The vanilla extract contains alcohol. It goes in the dough and is baked at 450°F. Recipe adapted from <a href="https://humbly-homemade.com/pumpkin-focaccia/">Humbly Homemade</a>.</p>
+    </div>
+  </section>
+
+  <section class="venue" aria-labelledby="venue">
+    <p class="label">Tonight · Concert &amp; potluck</p>
+    <h2 id="venue">Salon Salon</h2>
+    <p>Live music and a shared table. Salon Salon puts on evenings of listening to live music and sharing a potluck, with its home in an old ballet studio in the centre of Amsterdam.</p>
+    <div class="actions">
+      <a class="btn" href="https://www.instagram.com/salonsalon._/">Instagram · @salonsalon._</a>
+      <a class="btn" href="https://linktr.ee/salon.salon">Linktree · salon.salon</a>
+    </div>
+  </section>
+
+  <section class="promo" aria-labelledby="classes">
+    <p class="label">Brooklyn Loaf · Sourdough classes</p>
+    <h2 id="classes">4 hrs. 1 loaf. <em>Your own starter.</em></h2>
+    <p>Like the bread? Learn to make your own. Martin teaches small hands-on sourdough classes: you mix, fold, laminate, shape and score, then take your loaf home to bake the next morning.</p>
+    <p class="facts">WILD YEAST · BROOKLYN ROOTS<br>DM @BKLOAF TO BOOK</p>
+    <div class="actions">
+      <a class="btn primary" href="/#classes">See the next class</a>
+      <a class="btn" href="/">Brooklyn Loaf website</a>
+      <a class="btn" href="https://www.instagram.com/bkloaf/">Instagram · @bkloaf</a>
+    </div>
+  </section>
+
+  <footer class="signoff">
+    <img src="/images/bkloaf-badge.svg" alt="Brooklyn Loaf badge">
+    <div>
+      <p>Enjoy it. Go back for seconds.</p>
+      <p class="small">Tell Martin what you thought. He's the one hovering near the bread.</p>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>
