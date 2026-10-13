@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Brooklyn Loaf student guide: the recipe, schedules, troubleshooting and your own bake log.">
+<link rel="icon" type="image/svg+xml" href="/images/bkloaf-monogram.svg">
+<title>The Sourdough Class</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800;900&family=Big+Shoulders+Stencil+Display:wght@900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: a single-page flipbook on a kraft "bench"; each leaf turns on its left edge, content scrolls inside the page; last page is a live bake log. */
+:root{
+  --bench:#C8A273; --bench-ink:#1C1814;
+  --paper:#EEE5D3; --panel:#E6DBC6; --card:#F7F1E6; --line:#CDBFA6;
+  --ink:#1C1814; --muted:#5E554A; --rust:#A83F1B; --steel:#3F4B4E; --kraft:#C8A273;
+  --leaf-back:#B98F5E; --shadow:rgba(28,24,20,.28);
+  --f-stencil:"Big Shoulders Stencil Display","Big Shoulders Display",Impact,"Arial Narrow",sans-serif;
+  --f-title:"Big Shoulders Display",Impact,"Arial Narrow",sans-serif;
+  --f-body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bench:#141110; --bench-ink:#EEE5D3;
+  --paper:#231E19; --panel:#2D2620; --card:#1A1612; --line:#463B30;
+  --ink:#EEE5D3; --muted:#B3A58F; --rust:#E39A36; --steel:#9FB0B3; --kraft:#C8A273;
+  --leaf-back:#3A2F24; --shadow:rgba(0,0,0,.55); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bench:#141110; --bench-ink:#EEE5D3;
+  --paper:#231E19; --panel:#2D2620; --card:#1A1612; --line:#463B30;
+  --ink:#EEE5D3; --muted:#B3A58F; --rust:#E39A36; --steel:#9FB0B3; --kraft:#C8A273;
+  --leaf-back:#3A2F24; --shadow:rgba(0,0,0,.55); color-scheme:dark}
+
+html,body{height:100%}
+body{background:var(--bench);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.app{height:100%;display:flex;flex-direction:column;gap:10px;padding-inline:16px;padding-block:12px;max-width:760px;margin:0 auto;box-sizing:border-box}
+*,*::before,*::after{box-sizing:border-box}
+
+/* top bar */
+.bar{display:flex;align-items:center;gap:10px;color:var(--bench-ink);font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;flex-wrap:wrap}
+.bar .brand{font-family:var(--f-title);font-weight:900;font-size:20px;letter-spacing:.02em;text-transform:uppercase;margin-right:auto}
+.bar select,.navbtn{font:inherit;color:var(--bench-ink);background:transparent;border:1.5px solid currentColor;padding:6px 10px;border-radius:0;cursor:pointer}
+.bar select option{color:#1C1814;background:#EEE5D3}
+.navbtn:disabled{opacity:.35;cursor:default}
+.navbtn:focus-visible,.bar select:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--rust);outline-offset:2px}
+.counter{font-variant-numeric:tabular-nums;min-width:62px;text-align:center}
+
+/* book */
+.book{position:relative;flex:1;min-height:440px;perspective:2200px}
+.leaf{position:absolute;inset:0;transform-origin:left center;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.3,.7,.2,1)}
+.leaf.turned{transform:rotateY(-178deg);pointer-events:none}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 10px 30px var(--shadow),0 1px 0 var(--line)}
+.front{background:var(--paper);overflow-y:auto;overscroll-behavior:contain;padding:28px 28px 20px;display:flex;flex-direction:column;gap:18px;border-left:3px solid var(--line)}
+.back{background:var(--leaf-back);transform:rotateY(180deg);display:grid;place-items:center}
+.back span{font-family:var(--f-stencil);font-size:56px;color:var(--paper);opacity:.25;letter-spacing:.04em}
+@media (prefers-reduced-motion: reduce){.leaf{transition:none}}
+@media (max-width:520px){.front{padding:20px 18px 16px}}
+
+/* page type */
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--rust);font-weight:600}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1{font-family:var(--f-stencil);font-weight:900;font-size:clamp(38px,8vw,60px);line-height:.92;text-transform:uppercase;letter-spacing:.01em}
+h2{font-family:var(--f-title);font-weight:900;font-size:clamp(30px,6vw,42px);line-height:.95;text-transform:uppercase}
+h3{font-family:var(--f-title);font-weight:800;font-size:20px;text-transform:uppercase;color:var(--rust);letter-spacing:.02em}
+.head{display:flex;flex-direction:column;gap:4px}
+.lede{color:var(--muted);margin:0;max-width:62ch}
+p{margin:0}
+.foot{margin-top:auto;border-top:2px solid var(--ink);padding-top:8px;display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+
+.panel{background:var(--panel);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.note{border:1.5px dashed var(--muted);padding:10px 12px;background:var(--card);font-size:14px}
+.note b,.tag{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--rust);font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{border:1.5px solid var(--ink);padding:10px;display:flex;flex-direction:column;gap:2px;background:var(--card)}
+.stat strong{font-family:var(--f-title);font-weight:900;font-size:34px;line-height:1;color:var(--rust);font-variant-numeric:tabular-nums}
+.stat span{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+ul.list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+ul.list li{display:flex;gap:10px;align-items:baseline}
+ul.list li::before{content:"";flex:0 0 9px;height:9px;background:var(--rust);transform:translateY(1px)}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;text-align:left;color:var(--muted);font-weight:500;padding:6px 8px;border-bottom:2px solid var(--ink)}
+td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--f-mono)}
+tr.total td{font-weight:700;border-bottom:2px solid var(--ink)}
+
+/* steps */
+.step{background:var(--panel);padding:16px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:start}
+.step .n{width:34px;height:34px;border-radius:50%;background:var(--rust);color:var(--paper);display:grid;place-items:center;font-family:var(--f-title);font-weight:900;font-size:18px}
+.step .top{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.time{font-family:var(--f-mono);font-size:12px;color:var(--rust);background:var(--card);padding:2px 10px;border-radius:20px;font-weight:600}
+.step ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px;grid-column:2}
+.step .meta{grid-column:2;display:flex;flex-direction:column;gap:8px}
+.rest{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+
+/* gantt */
+.gantt{display:flex;flex-direction:column;gap:6px;min-width:520px}
+.g-row{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;font-size:13px}
+.g-track{position:relative;height:18px;background:var(--card);border:1px solid var(--line)}
+.g-bar{position:absolute;top:0;bottom:0;background:var(--ink)}
+.g-bar.r{background:var(--rust)} .g-bar.s{background:var(--steel)} .g-bar.k{background:var(--kraft)}
+.g-bar.fade{background:repeating-linear-gradient(45deg,var(--steel) 0 4px,transparent 4px 8px)}
+.g-axis{display:grid;grid-template-columns:110px 1fr;gap:10px}
+.g-ticks{position:relative;height:16px;font-family:var(--f-mono);font-size:10.5px;color:var(--muted)}
+.g-ticks span{position:absolute;transform:translateX(-50%);font-variant-numeric:tabular-nums}
+.timeline{display:flex;flex-direction:column}
+.tl{display:grid;grid-template-columns:78px 1fr;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+.tl b{font-family:var(--f-mono);font-size:13px;color:var(--rust);font-variant-numeric:tabular-nums}
+
+/* temp bars */
+.tbars{display:flex;flex-direction:column;gap:8px}
+.tbar{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center;font-family:var(--f-mono);font-size:12px}
+.tbar .t{position:relative;height:22px}
+.tbar .fill{height:100%;background:var(--ink);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:var(--paper);font-weight:600}
+
+/* shaping */
+.shape{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media (max-width:600px){.shape{grid-template-columns:repeat(2,1fr)}}
+.sh{background:var(--card);padding:10px;text-align:center;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.sh svg{width:100%;height:44px}
+.sh b{font-size:14px}
+
+/* crumb */
+.crumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center;font-size:13px}
+.crumbs svg{width:100%;height:auto;max-width:180px}
+.crumbs b{display:block;font-size:14px}
+.crumbs .bad b{color:var(--rust)}
+
+/* cover */
+.cover{justify-content:flex-start}
+.cover .lot{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;border-bottom:2px solid var(--ink);padding-bottom:8px}
+.score{width:100%;max-width:420px;height:auto;color:var(--rust)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:480px){.fields{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+input,textarea{font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:0;padding:8px 10px;width:100%}
+input:focus,textarea:focus{border-color:var(--rust)}
+.ticket{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--ink)}
+.ticket div{padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.ticket div+div{border-left:1.5px dashed var(--ink)}
+.ticket span{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ticket b{font-family:var(--f-title);font-size:20px;font-weight:800;text-transform:uppercase}
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:4px 16px}
+.toc button{all:unset;cursor:pointer;display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+.toc button span{font-family:var(--f-mono);color:var(--rust);font-variant-numeric:tabular-nums}
+.toc button:hover{color:var(--rust)}
+
+/* log */
+.log-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:10px 14px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;border-radius:0}
+.btn.ghost{background:transparent;color:var(--ink)}
+.entries{display:flex;flex-direction:column;gap:12px}
+.entry{border:1.5px solid var(--ink);background:var(--card)}
+.entry-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;border-bottom:1.5px dashed var(--ink);background:var(--panel)}
+.entry-head .lotno{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--rust);font-weight:600}
+.entry-body{padding:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.entry-body .wide{grid-column:1/-1}
+@media (max-width:560px){.entry-body{grid-template-columns:1fr 1fr}}
+.del{all:unset;cursor:pointer;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.del.arm{color:var(--rust);font-weight:600}
+.empty{border:1.5px dashed var(--muted);padding:18px;text-align:center;color:var(--muted)}
+.toast{font-family:var(--f-mono);font-size:12px;color:var(--rust);min-height:18px}
+.signoff{font-family:var(--f-stencil);font-size:40px;text-transform:uppercase;line-height:1}
+.hint{font-family:var(--f-mono);font-size:11px;color:var(--bench-ink);opacity:.75;text-align:center;letter-spacing:.06em}
+</style>
+<style>
+body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+.bar a.brand{color:inherit;text-decoration:none}
+.join-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.join-form .wide{grid-column:1/-1}
+@media (max-width:480px){.join-form{grid-template-columns:1fr}}
+select.inp{font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:0;padding:8px 10px;width:100%}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.check input{width:auto;margin-top:3px;accent-color:var(--rust)}
+.join-done{font-family:var(--f-mono);font-size:13px;color:var(--rust);font-weight:600}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="bar">
+    <a class="brand" href="/">Brooklyn Loaf</a>
+    <select id="jump" aria-label="Jump to page"></select>
+    <button class="navbtn" id="prev" aria-label="Previous page">← Prev</button>
+    <span class="counter" id="count">01 / 11</span>
+    <button class="navbtn" id="next" aria-label="Next page">Next →</button>
+  </div>
+
+  <div class="book" id="book">
+
+  <!-- 1 COVER -->
+  <section class="leaf" data-title="Cover"><div class="face front cover">
+    <div class="lot"><span>@bkloaf · Class guide</span><span>Lot 24·10·26</span></div>
+    <h1>The<br>Sourdough<br>Class</h1>
+    <svg class="score" viewBox="0 0 420 40" aria-hidden="true"><path d="M4 30 C 120 4, 300 4, 416 26" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+    <p class="lede">Your guide to one great loaf: what we did today, how to finish it at home, and how to bake it again and again.</p>
+    <div class="fields">
+      <div class="field"><label for="f-name">My name</label><input id="f-name" placeholder="Write your name"></div>
+      <div class="field"><label for="f-starter">My starter's name</label><input id="f-starter" placeholder="Every starter needs one"></div>
+    </div>
+    <div class="ticket">
+      <div><span>Class</span><b>Sat 24 Oct 2026</b></div>
+      <div><span>My first home bake</span><b>Sun 25 Oct</b></div>
+    </div>
+    <div class="toc" id="toc"></div>
+    <div class="foot"><span>@bkloaf · Brooklyn Loaf</span><span>1</span></div>
+  </div><div class="face back"><span>BK</span></div></section>
+
+  <!-- 2 RECIPE -->
+  <section class="leaf" data-title="The recipe"><div class="face front">
+    <div class="head"><span class="eyebrow">The recipe</span><h2>Your loaf at a glance</h2>
+    <p class="lede">One loaf, about 650g of dough. Baker's percentages are measured against total flour (325g = 100%).</p></div>
+    <div class="stats">
+      <div class="stat"><strong>80%</strong><span>Hydration (incl. levain)</span></div>
+      <div class="stat"><strong>20%</strong><span>Levain</span></div>
+      <div class="stat"><strong>~6h</strong><span>Bulk at 74°F / 23°C</span></div>
+      <div class="stat"><strong>12–16h</strong><span>Cold rest in fridge</span></div>
+    </div>
+    <div class="panel"><h3>Ingredients</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Ingredient</th><th class="num">Grams</th><th class="num">Baker's %</th></tr>
+        <tr><td>Bread flour (King Arthur, 12.7% protein)</td><td class="num">255</td><td class="num">78.5%</td></tr>
+        <tr><td>Whole wheat flour</td><td class="num">70</td><td class="num">21.5%</td></tr>
+        <tr><td>Warm water (~80°F / 27°C)</td><td class="num">253</td><td class="num">77.8%</td></tr>
+        <tr><td>Levain (ripe, at its peak)</td><td class="num">65</td><td class="num">20%</td></tr>
+        <tr><td>Fine sea salt</td><td class="num">8</td><td class="num">2.5%</td></tr>
+        <tr class="total"><td>Total dough</td><td class="num">651</td><td></td></tr>
+      </table></div>
+      <div class="note"><b>Swap rule:</b> if your flour is weaker than 12.7% protein, hold back 20–30g of water.</div>
+    </div>
+    <div class="cols">
+      <div class="panel"><h3>Levain build 1 : 2 : 2</h3>
+        <div class="tbl-wrap"><table>
+          <tr><td>Ripe starter</td><td class="num">15g</td></tr>
+          <tr><td>Warm water</td><td class="num">30g</td></tr>
+          <tr><td>Flour</td><td class="num">30g</td></tr>
+        </table></div>
+        <p>Leave at about 80°F / 27°C for 5–6 hours until it has more than tripled and peaked.</p>
+      </div>
+      <div class="panel"><h3>Dusting flours</h3>
+        <ul class="list"><li><span><b>All-purpose:</b> the counter when shaping</span></li>
+        <li><span><b>Brown rice flour:</b> the banneton (it doesn't stick)</span></li>
+        <li><span><b>Semolina:</b> under the loaf before baking</span></li></ul>
+      </div>
+    </div>
+    <div class="panel"><h3>Tools</h3>
+      <ul class="list cols" style="gap:6px 14px">
+        <li>Digital scale (grams)</li><li>Large bowl + shower cap</li><li>Bench knife / scraper</li>
+        <li>Banneton 10"×6"×4" oval</li><li>Dutch oven with lid</li><li>Lame + razor blades</li>
+        <li>Parchment paper</li><li>Spray bottle of water</li><li>Thermometer (optional)</li>
+      </ul>
+    </div>
+    <div class="foot"><span>@bkloaf · Brooklyn Loaf</span><span>2</span></div>
+  </div><div class="face back"><span>BK</span></div></section>
+
+  <!-- 3 HOME SCHEDULE -->
+  <section class="leaf" data-title="The home schedule"><div class="face front">
+    <div class="head"><span class="eyebrow">The home schedule</span><h2>A bake day, hour by hour</h2>
+    <p class="lede">Most of this time is waiting. Hands-on time adds up to about 45 minutes. Use this for every loaf after class.</p></div>
+    <div class="panel"><div class="tbl-wrap"><div class="gantt" id="g-home"></div></div></div>
+    <div class="cols">
+      <div class="timeline">
+        <div class="tl"><b>6:30am</b><span>Build the levain</span></div>
+        <div class="tl"><b>9:30am</b><span>Autolyse: mix flour + water</span></div>
+        <div class="tl"><b>12:30pm</b><span>Add the levain</span></div>
+        <div class="tl"><b>1:00pm</b><span>Add the salt</span></div>
+        <div class="tl"><b>1:30pm</b><span>Light fold on the counter</span></div>
+        <div class="tl"><b>2:00pm</b><span>Lamination</span></div>
+      </div>
+      <div class="timeline">
+        <div class="tl"><b>2:45pm</b><span>Coil fold 1</span></div>
+        <div class="tl"><b>3:30pm</b><span>Coil fold 2</span></div>
+        <div class="tl"><b>4:15pm</b><span>Coil fold 3, then leave it</span></div>
+        <div class="tl"><b>6:30pm</b><span>Shape → banneton</span></div>
+        <div class="tl"><b>7:00pm</b><span>Into the fridge</span></div>
+        <div class="tl"><b>Next am</b><span>Bake (page 8)</span></div>
+      </div>
+    </div>
+    <div class="panel"><h3>Next morning: bake</h3><div class="tbl-wrap"><div class="gantt" id="g-bake"></div></div></div>
+    <div class="note"><b>Shift the whole day:</b> every time moves together. Want to shape at 9pm instead? Start everything 2.5 hours later.</div>
+    <div class="foot"><span>@bkloaf · Brooklyn Loaf</span><span>3</span></div>
+  </div><div class="face back"><span>BK</span></div></section>
+
+  <!-- 4 TODAY'S CLASS -->
+  <section class="leaf" data-title="Today's class"><div class="face front">
+    <div class="head"><span class="eyebrow">Today's class</span><h2>Your loaf, turbo-charged</h2>
+    <p class="lede">A normal bulk takes about 6 hours at 74°F, and class lasts 4. So today your dough rests between folds in a warm spot at about 80°F, then finishes rising on your kitchen counter tonight.</p></div>
+    <div class="stats">
+      <div class="stat"><strong>~80°F</strong><span>Warm spot in class</span></div>
+      <div class="stat"><strong>~3h</strong><span>Bulk during class</span></div>
+      <div class="stat"><strong>2.5h</strong><span>On your counter tonight</span></div>
+      <div class="stat"><strong>6:30</strong><span>pm · into the fridge</span></div>
+    </div>
+    <div class="panel"><h3>Class loaf vs. a normal home bake</h3><div class="tbl-wrap"><div class="gantt" id="g-class"></div></div></div>
+    <div class="cols">
+      <div class="panel"><h3>Tonight, step by step</h3>
+        <div class="timeline">
+          <div class="tl"><b>4:00pm</b><span>Carry the banneton home level, covered with its shower cap</span></div>
+          <div class="tl"><b>Until 6:30</b><span>Leave it on the counter, not in the fridge. Away from radiators and sun</span></div>
+          <div class="tl"><b>6:30pm</b><span>Into the fridge, covered, 12–16 hours. It should look a little puffier</span></div>
+          <div class="tl"><b>Sunday</b><span>Bake straight from the fridge (page 8)</span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+        <div class="note"><b>Only for today.</b> The warm spot and counter rest are there because class is only 4 hours. At home, follow page 3: a full bulk in the bowl, shape, 10–20 min on the counter, then the fridge.</div>
+        <div class="panel"><h3>Also in your bag</h3>
+          <ul class="list"><li><span>Your starter: named and fed at 9am. Fridge tonight (page 10)</span></li>
+          <li><span>Parchment for Sunday's bake</span></li>
+          <li><span>This guide: page 8 is your Sunday morning</span></li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>@bkloaf · Brooklyn Loaf</span><span>4</span></div>
+  </div><div class="face back"><span>BK</span></div></section>
+
+  <!-- 5 MIXING -->
+  <section class="leaf" data-title="Mixing"><div class="face front">
+    <div class="head"><span class="eyebrow">Step by step · Part 1</span><h2>Mixing</h2>
+    <p class="lede">Wet hands for every step. Dough doesn't stick to wet skin.</p></div>
+    <div class="step"><span class="n">1</span><div class="top"><h3>Build the levain</h3><span class="time">6:30am</span></div>
+      <ol><li>Mix 15g starter + 30g warm water + 30g flour.</li><li>Cover and keep warm (~80°F / 27°C). An oven with just the light on works.</li><li>Mark the level with a rubber band.</li></ol>
+      <div class="meta"><div class="note"><b>Ready when:</b> more than tripled, domed, bubbly, smells like yogurt. A spoonful floats in water.</div><span class="rest">5–6 hours</span></div></div>
+    <div class="step"><span class="n">2</span><div class="top"><h3>Autolyse</h3><span class="time">9:30am</span></div>
+      <ol><li>253g warm water + 255g bread flour + 70g whole wheat.</li><li>Stir until no dry flour is left, scraping down the sides.</li><li>Cover with a shower cap.</li></ol>
+      <div class="meta"><div class="note"><b>Why:</b> soaking the flour starts gluten development before you do any work.</div><span class="rest">Rest 3 hours (30–60 min with weaker flour)</span></div></div>
+    <div class="step"><span class="n">3</span><div class="top"><h3>Add the levain</h3><span class="time">12:30pm</span></div>
+      <ol><li>Spoon 65g levain on top (keep a little back to feed your starter).</li><li>With a wet hand, spread it across the surface.</li><li>Pinch and squeeze it through until it's even.</li></ol>
+      <div class="meta"><div class="note"><b>Feels like:</b> shaggy, sticky and messy at first. That's normal.</div><span class="rest">Rest 30 min</span></div></div>
+    <div class="step"><span class="n">4</span><div class="top"><h3>Add the salt</h3><span class="time">1:00pm</span></div>
+      <ol><li>Sprinkle 8g fine sea salt over the surface.</li><li>Dimple it in with wet fingertips.</li><li>Fold the dough over itself for 4–5 minutes.</li></ol>
+      <div class="meta"><div class="note"><b>Why:</b> salt tightens the gluten, adds strength and slows fermentation a little.</div><span class="rest">Rest 30 min</span></div></div>
+    <div class="note"><b>Float test:</b> drop a teaspoon of levain into water. Floats = ready. Sinks = give it more time.</div>
+    <div class="foot"><span>@bkloaf · Brooklyn Loaf</span><span>5</span></div>
+  </div><div class="face back"><span>BK</span></div></section>
+
+  <!-- 6 STRENGTH -->
+  <section class="leaf" data-title="Building strength"><div class="face front">
+    <div class="head"><span class="eyebrow">Step by step · Part 2</span><h2>Building strength</h2>
+    <p class="lede">Each fold lines up the gluten. After each rest the dough should feel a bit stronger and hold its shape a bit better.</p></div>
+    <div class="step"><span class="n">5</span><div class="top"><h3>Light fold on the counter</h3><span class="time">1:30pm</span></div>
+      <ol><li>Mist the counter. Scrape the dough out of the bowl.</li><li>With a wet bench knife, lift the top edge and fold it down over the dough.</li><li>Repeat on all four sides, round it up, back in the bowl.</li></ol>
+      <div class="meta"><div class="note"><b>Check:</b> your first real feel of the dough. Slack or springy? Make a note.</div><span class="rest">Rest 30 min</span></div></div>
+    <div class="step"><span class="n">6</span><div class="top"><h3>Lamination: the big stretch</h3><span class="time">2:00pm</span></div>
+      <ol><li>Mist the counter and tip the dough out upside down.</li><li>With wet hands, pull gently from the centre outward into a thin rectangle. Don't pull from the edges, and don't tear it.</li><li>Fold left third in, right third in, then top down and bottom up. Pop any big air pockets.</li></ol>
+      <div class="meta"><div class="note"><b>Photo moment:</b> hold it up to the light and look for the windowpane.</div><span class="rest">Rest 45 min</span></div></div>
+    <div class="step"><span class="n">7</span><div class="top"><h3>Coil folds ×3</h3><span class="time">2:45 · 3:30 · 4:15pm</span></div>
+      <ol><li>With wet hands, reach under the middle of the dough.</li><li>Lift slowly until the far end lets go and tucks under itself.</li><li>Turn the bowl 90° and repeat on all four sides.</li></ol>
+      <div class="meta"><div class="note"><b>Good sign:</b> the dough stops spreading to the corners and stays rounded at the edges.</div><span class="rest">Rest 45 min between folds · add 1–2 extra folds if it still feels loose</span></div></div>
+    <div class="foot"><span>@bkloaf · Brooklyn Loaf</span><span>6</span></div>
+  </div><div class="face back"><span>BK</span></div></section>
+
+  <!-- 7 READING & SHAPING -->
+  <section class="leaf" data-title="Reading the dough"><div class="face front">
+    <div class="head"><span class="eyebrow">Step by step · Part 3</span><h2>Reading the dough &amp; shaping</h2></div>
+    <div class="cols">
+      <div class="panel"><h3>Temperature controls the clock</h3>
+        <p class="rest">Bulk time from adding the levain, at 20% levain</p>
+        <div class="tbars" id="tbars"></div>
+        <div class="note">Warmer kitchen = shorter bulk. Cooler kitchen = longer bulk. Watch the dough, not the clock.</div>
+      </div>
+      <div class="panel"><h3>Is bulk done? (~6:30pm)</h3>
+        <ul class="list"><li><span>About <b>50–60% bigger</b> than when you added the levain (no more)</span></li>
+        <li><span>Puffy and light, growing up as much as out</span></li><li><span>Rounded, domed edges</span></li>
+        <li><span>Bubbles along the sides and on top</span></li><li><span>Jiggles when you shake the bowl</span></li></ul>
+        <div class="note"><b>Very sticky and slack?</b> It's gone too far. Shape it right away and shorten bulk next time.</div>
+        <div class="note"><b>Tip:</b> a straight-sided tub with a tape mark shows the 50% rise.</div>
+      </div>
+    </div>
+    <div class="panel"><div class="top" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h3>8 · Shape into a batard</h3><span class="time">6:30pm</span></div>
+      <div class="shape">
+        <div class="sh"><svg viewBox="0 0 80 44"><ellipse cx="40" cy="22" rx="34" ry="16" fill="var(--kraft)"/></svg><b>1 · Flip out</b>Floured counter, top side down</div>
+        <div class="sh"><svg viewBox="0 0 80 44"><rect x="10" y="6" width="60" height="32" fill="var(--kraft)"/><path d="M16 22h16m-6-6 6 6-6 6M64 22H48m6-6-6 6 6 6" stroke="var(--rust)" stroke-width="3" fill="none"/></svg><b>2 · Sides in</b>Fold onto the centre, pat down</div>
+        <div class="sh"><svg viewBox="0 0 80 44"><rect x="24" y="4" width="32" height="36" fill="var(--kraft)"/><path d="M40 10v22m-6-6 6 6 6-6" stroke="var(--rust)" stroke-width="3" fill="none"/></svg><b>3 · Roll down</b>Tuck firmly with your thumbs</div>
+        <div class="sh"><svg viewBox="0 0 80 44"><rect x="28" y="4" width="24" height="36" rx="10" fill="var(--kraft)"/><path d="M40 8v28" stroke="var(--ink)" stroke-width="2" stroke-dasharray="3 3"/></svg><b>4 · Seal</b>Pinch the seam and the ends</div>
+        <div class="sh"><svg viewBox="0 0 80 44"><ellipse cx="40" cy="22" rx="36" ry="19" fill="var(--steel)"/><ellipse cx="40" cy="22" rx="26" ry="13" fill="var(--kraft)"/><path d="M40 12v20" stroke="var(--ink)" stroke-width="3"/></svg><b>5 · Seam up</b>Rice flour, into the banneton</div>
+      </div>
+      <div class="cols">
+        <div class="note"><b>The more you pat down,</b> the more even the crumb. Leave a few bubbles for an open, holey crumb.</div>
+        <div class="note"><b>Final proof:</b> 10–20 min at room temp, then a very cold fridge (38°F / 3°C) for 12–16 hours. Cover it.</div>
+      </div>
+    </div>
+    <div class="foot"><span>@bkloaf · Brooklyn Loaf</span><span>7</span></div>
+  </div><div class="face back"><span>BK</span></div></section>
+
+  <!-- 8 BAKE DAY -->
+  <section class="leaf" data-title="Bake day"><div class="face front">
+    <div class="head"><span class="eyebrow">Sunday 25 October</span><h2>Bake day</h2>
+    <p class="lede">Bake straight from the fridge. Cold dough is easier to score and springs better. Your loaf has been in since 6:30pm last night.</p></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Time</th><th>Step</th><th>Detail</th></tr>
+      <tr><td class="num">7:00</td><td><b>Preheat</b></td><td>500°F / 260°C for 60 min with the Dutch oven (lid on) on the lowest rack, on a broiler tray or two stacked sheet trays so the bottom doesn't burn. Dough stays in the fridge.</td></tr>
+      <tr><td class="num">8:00</td><td><b>Flip &amp; score</b></td><td>Semolina on the dough, parchment on top, flip it out. One confident line, ½" deep at 45°.</td></tr>
+      <tr><td class="num">8:02</td><td><b>Load</b></td><td>Dutch oven out with gloves. Lower the loaf in on the parchment, lid on, back in.</td></tr>
+      <tr><td class="num">8:02</td><td><b>Lid on · 20 min</b></td><td>Turn down to 485°F / 250°C.</td></tr>
+      <tr><td class="num">8:22</td><td><b>Lid off · 20–25 min</b></td><td>Turn down to 450°F / 230°C. Bake until deep brown. Darker = more flavour.</td></tr>
+      <tr><td class="num">8:45</td><td><b>Cool</b></td><td>Onto a rack. Listen to it crackle. Wait at least 1 hour before slicing; it's still cooking inside.</td></tr>
+    </table></div>
+    <div class="cols">
+      <div class="panel"><h3>Scoring</h3>
+        <svg viewBox="0 0 240 90" style="width:100%;max-width:280px" aria-label="Score one off-centre curve at 45 degrees"><ellipse cx="120" cy="45" rx="110" ry="38" fill="var(--kraft)"/><path d="M60 52 C 100 28, 150 26, 190 40" stroke="var(--rust)" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+        <p>Top: one off-centre curve. Side: 45°, ½" deep. A shallow angle lifts a flap that bakes into the "ear".</p>
+      </div>
+      <div class="panel"><h3>Is it done?</h3>
+        <ul class="list"><li>Deep chestnut brown, blistered crust</li><li>Hollow sound when you tap the base</li><li>Internal temperature ≥ 205°F / 96°C</li></ul>
+        <div class="note"><b>Share it!</b> Post your crumb shot in the class WhatsApp group. Martin will give feedback on every loaf.</div>
+      </div>
+    </div>
+    <div class="foot"><span>@bkloaf · Brooklyn Loaf</span><span>8</span></div>
+  </div><div class="face back"><span>BK</span></div></section>
+
+  <!-- 9 TROUBLESHOOTING -->
+  <section class="leaf" data-title="Troubleshooting"><div class="face front">
+    <div class="head"><span class="eyebrow">When things go sideways</span><h2>Troubleshooting</h2>
+    <p class="lede">Every loaf teaches you something. Cut it in half, look at the crumb, and decide what to change next time.</p></div>
+    <div class="crumbs">
+      <div class="bad"><svg viewBox="0 0 180 90"><path d="M10 86 A80 76 0 0 1 170 86 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="7"/><ellipse cx="90" cy="34" rx="56" ry="8" fill="var(--steel)"/></svg><b>Under-proofed</b>Dense, gummy, tunnel under the crust</div>
+      <div><svg viewBox="0 0 180 90"><path d="M10 86 A80 76 0 0 1 170 86 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="7"/><circle cx="60" cy="50" r="8" fill="var(--card)"/><circle cx="95" cy="38" r="9" fill="var(--card)"/><circle cx="125" cy="58" r="7" fill="var(--card)"/><circle cx="80" cy="68" r="6" fill="var(--card)"/><circle cx="112" cy="74" r="5" fill="var(--card)"/></svg><b>Just right</b>Tall, even, open, glossy holes</div>
+      <div class="bad"><svg viewBox="0 0 180 90"><path d="M8 86 Q 90 40 172 86 Z" fill="var(--panel)" stroke="var(--kraft)" stroke-width="7"/><ellipse cx="70" cy="76" rx="14" ry="3" fill="var(--card)"/><ellipse cx="110" cy="76" rx="14" ry="3" fill="var(--card)"/></svg><b>Over-proofed</b>Flat, pale, sour, spreads out</div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>What you see</th><th>Likely cause</th><th>Try next time</th></tr>
+      <tr><td>Sticky, slack dough that won't build strength</td><td>Weak flour or a sluggish levain</td><td>Hold back 20–30g water · shorten autolyse to 30–60 min · levain at its peak · gentle hands</td></tr>
+      <tr><td>Hardly any rise during bulk</td><td>Kitchen too cold · starter sleepy</td><td>Warm spot (oven light on) · extend bulk · feed starter twice the day before</td></tr>
+      <tr><td>Very sticky and loose at end of bulk</td><td>Over-fermented</td><td>Shape sooner · cooler spot · aim for 50–60% rise, not doubling</td></tr>
+      <tr><td>Loaf spreads flat in the oven</td><td>Weak shaping or over-proofed</td><td>Extra coil fold · tighter roll · bake straight from a cold fridge</td></tr>
+      <tr><td>Dense crumb with a tunnel at the top</td><td>Under-fermented</td><td>Longer or warmer bulk</td></tr>
+      <tr><td>Sticks to the banneton</td><td>Not enough rice flour</td><td>Dust generously with brown rice flour · use a liner</td></tr>
+      <tr><td>Burnt bottom</td><td>Direct heat from below</td><td>Broiler tray or two sheet trays under the Dutch oven</td></tr>
+      <tr><td>No "ear", pale score</td><td>Cut too vertical or too timid</td><td>45°, ½" deep, one confident stroke · dough straight from the fridge</td></tr>
+    </table></div>
+    <div class="foot"><span>@bkloaf · Brooklyn Loaf</span><span>9</span></div>
+  </div><div class="face back"><span>BK</span></div></section>
+
+  <!-- 10 STARTER -->
+  <section class="leaf" data-title="Your starter"><div class="face front">
+    <div class="head"><span class="eyebrow">Keeping it alive</span><h2>Caring for your starter</h2>
+    <p class="lede">Flour, water and a colony of wild yeast and bacteria. Feed it and it'll keep going for years.</p></div>
+    <div class="cols">
+      <div class="panel"><h3>Pick your rhythm</h3>
+        <div class="tbl-wrap"><table>
+          <tr><th></th><th>Weekly baker</th><th>Daily baker</th></tr>
+          <tr><td><b>Lives</b></td><td>Fridge</td><td>Counter</td></tr>
+          <tr><td><b>Feed</b></td><td>Once a week</td><td>Every 12–24h</td></tr>
+          <tr><td><b>Ratio</b></td><td>1 : 2 : 2</td><td>1 : 1 : 1</td></tr>
+          <tr><td><b>Before a bake</b></td><td>Feed the night before, build levain in the morning</td><td>Use at its peak</td></tr>
+        </table></div>
+      </div>
+      <div class="panel"><h3>A healthy starter…</h3>
+        <ul class="list"><li><span>Doubles or more within 4–8 hours of a feed</span></li><li><span>Looks domed and bubbly at its peak</span></li>
+        <li><span>Smells like yogurt or apple. Very sour or nail polish = hungry</span></li><li><span>Passes the float test</span></li></ul>
+        <div class="note"><b>Grey liquid on top ("hooch")?</b> It's hungry, not dead. Pour it off and feed.</div>
+      </div>
+    </div>
+    <div class="panel"><h3>Your starter's first week</h3>
+      <div class="timeline">
+        <div class="tl"><b>Sat night</b><span>Fed at 9am, so it's peaked. Into the fridge, lid loose, alongside your loaf at 6:30pm.</span></div>
+        <div class="tl"><b>Wed / Thu</b><span>Discard all but 15g, feed 30g water + 30g flour. 2 hours on the counter, then back in the fridge.</span></div>
+        <div class="tl"><b>Next bake</b><span>Feed it the night before, then build your levain at 6:30am (page 3).</span></div>
+      </div>
+      <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat"><strong>15g</strong><span>Starter</span></div>
+        <div class="stat"><strong>30g</strong><span>Warm water</span></div>
+        <div class="stat"><strong>30g</strong><span>Flour (50/50 bread + WW)</span></div>
+      </div>
+    </div>
+    <div class="note"><b>Discard</b> doesn't have to go in the bin. Use it in pancakes, crackers or waffles.</div>
+    <div class="foot"><span>@bkloaf · Brooklyn Loaf</span><span>10</span></div>
+  </div><div class="face back"><span>BK</span></div></section>
+
+  <!-- 11 BAKE LOG -->
+  <section class="leaf" data-title="My loaves (bake log)"><div class="face front">
+    <div class="head"><span class="eyebrow">Bake log</span><h2>My loaves</h2>
+    <p class="lede">Write down every bake. Temperature and bulk time will teach you more than any recipe. Every loaf gets a lot number.</p></div>
+    <div class="log-actions">
+      <button class="btn" id="add">+ Add a loaf</button>
+      <button class="btn ghost" id="copy">Copy my log</button>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <div class="entries" id="entries"></div>
+    <p class="rest">Saved in this browser on this device. Use “Copy my log” to keep a backup in your notes.</p>
+    <div class="panel" id="join"><h3>Join the bakers</h3>
+      <p>New classes, bake-alongs and first dibs on anything upstate. One email now and then, never spam.</p>
+      <form name="bakers" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="join-form" id="join-form">
+        <input type="hidden" name="form-name" value="bakers">
+        <p hidden><label>Don't fill this out if you're human: <input name="bot-field"></label></p>
+        <div class="field"><label for="j-name">Name</label><input id="j-name" name="name" required autocomplete="name"></div>
+        <div class="field"><label for="j-email">Email</label><input id="j-email" name="email" type="email" required autocomplete="email" placeholder="you@email.com"></div>
+        <div class="field wide"><label for="j-lot">Your class</label>
+          <select class="inp" id="j-lot" name="class-lot">
+            <option value="LOT 24-10-26">LOT 24·10·26 · Sat 24 Oct 2026</option>
+            <option value="Earlier class">An earlier class</option>
+            <option value="Not yet">Not been to one yet</option>
+          </select></div>
+        <label class="check wide"><input type="checkbox" name="upstate" value="yes" id="j-upstate"> Tell me about events upstate in Kingston</label>
+        <div class="wide" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" type="submit" id="j-btn">Join the bakers</button><span class="join-done" id="j-done" role="status"></span></div>
+      </form>
+    </div>
+    <div class="cols">
+      <div class="panel"><h3>Remember</h3><p>Wet hands. Warm levain. Watch the dough, not the clock.</p></div>
+      <div class="panel"><h3>Share</h3><p>Post your crumb shot in the class WhatsApp group and tag @bkloaf.</p></div>
+      <div class="panel"><h3>Stuck?</h3><p>Message the group with a photo of the dough. Someone's always baking.</p></div>
+    </div>
+    <p class="signoff">Happy baking.</p>
+    <div class="foot"><span>@bkloaf · Brooklyn Loaf</span><span>11</span></div>
+  </div><div class="face back"><span>BK</span></div></section>
+
+  </div>
+  <p class="hint">Swipe, use the arrows, or ← → keys to turn pages</p>
+</div>
+
+<script>
+(function(){
+  const leaves=[...document.querySelectorAll('.leaf')];
+  const N=leaves.length;
+  let cur=0;
+  const $=id=>document.getElementById(id);
+  const pad=n=>String(n).padStart(2,'0');
+
+  // jump menu + contents
+  const jump=$('jump'), toc=$('toc');
+  leaves.forEach((l,i)=>{
+    const o=document.createElement('option');o.value=i;o.textContent=pad(i+1)+' · '+l.dataset.title;jump.appendChild(o);
+    if(i>0){const b=document.createElement('button');b.innerHTML='<span>'+pad(i+1)+'</span>'+l.dataset.title;b.onclick=()=>go(i);toc.appendChild(b);}
+  });
+
+  function render(){
+    leaves.forEach((l,i)=>{
+      const t=i<cur;
+      l.classList.toggle('turned',t);
+      l.style.zIndex=t? i : (N-i)+N;
+      l.setAttribute('aria-hidden',i!==cur);
+      l.inert = i!==cur;
+    });
+    $('count').textContent=pad(cur+1)+' / '+pad(N);
+    jump.value=cur;
+    $('prev').disabled=cur===0; $('next').disabled=cur===N-1;
+  }
+  function go(i){
+    cur=Math.max(0,Math.min(N-1,i));render();
+    const f=leaves[cur].querySelector('.front'); if(f) f.scrollTop=0;
+  }
+  $('prev').onclick=()=>go(cur-1);
+  $('next').onclick=()=>go(cur+1);
+  jump.onchange=()=>go(+jump.value);
+  document.addEventListener('keydown',e=>{
+    if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+    if(e.key==='ArrowRight')go(cur+1);
+    if(e.key==='ArrowLeft')go(cur-1);
+  });
+  let sx=0,sy=0;
+  const book=$('book');
+  book.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+  book.addEventListener('touchend',e=>{
+    if(/INPUT|TEXTAREA/.test(document.activeElement.tagName))return;
+    const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5) go(cur+(dx<0?1:-1));
+  },{passive:true});
+  const h=location.hash.replace('#','');
+  if(h==='log'||h==='join')cur=N-1; else if(/^p\d+$/.test(h))cur=Math.min(N-1,Math.max(0,parseInt(h.slice(1))-1));
+  render();
+
+  // gantt charts
+  function gantt(el,start,end,rows,ticks){
+    const span=end-start, pct=h=>((h-start)/span*100);
+    rows.forEach(r=>{
+      const row=document.createElement('div');row.className='g-row';
+      row.innerHTML='<span>'+r.label+'</span><div class="g-track"></div>';
+      const tr=row.lastChild;
+      r.bars.forEach(b=>{const d=document.createElement('div');d.className='g-bar '+(b.c||'');d.style.left=pct(b.s)+'%';d.style.width=(pct(b.e)-pct(b.s))+'%';d.title=b.t||'';tr.appendChild(d);});
+      el.appendChild(row);
+    });
+    const ax=document.createElement('div');ax.className='g-axis';ax.innerHTML='<span></span><div class="g-ticks"></div>';
+    ticks.forEach(t=>{const s=document.createElement('span');s.style.left=pct(t.h)+'%';s.textContent=t.l;ax.lastChild.appendChild(s);});
+    el.appendChild(ax);
+  }
+  gantt($('g-home'),6,20,[
+    {label:'Levain rising',bars:[{s:6.5,e:12.5,c:'k'}]},
+    {label:'Autolyse',bars:[{s:9.5,e:12.5,c:'s'}]},
+    {label:'Mix',bars:[{s:12.5,e:13.5,c:'r'}]},
+    {label:'Build strength',bars:[{s:13.5,e:17}]},
+    {label:'Bulk rest',bars:[{s:17,e:18.5,c:'s'}]},
+    {label:'Shape',bars:[{s:18.5,e:19,c:'r'}]},
+    {label:'Fridge →',bars:[{s:19,e:20,c:'fade'}]}
+  ],[{h:6,l:'6am'},{h:8,l:'8'},{h:10,l:'10'},{h:12,l:'12pm'},{h:14,l:'2'},{h:16,l:'4'},{h:18,l:'6'},{h:20,l:'8pm'}]);
+  gantt($('g-bake'),7,10,[
+    {label:'Preheat 500°F',bars:[{s:7,e:8,c:'k'}]},
+    {label:'Lid on 20′',bars:[{s:8.03,e:8.37,c:'r'}]},
+    {label:'Lid off 20–25′',bars:[{s:8.37,e:8.75}]},
+    {label:'Cool ≥ 1h',bars:[{s:8.75,e:9.75,c:'s'}]}
+  ],[{h:7,l:'7:00'},{h:8,l:'8:00'},{h:9,l:'9:00'},{h:10,l:'10:00'}]);
+  gantt($('g-class'),12,20,[
+    {label:'Class loaf',bars:[{s:12.33,e:12.6,c:'r'},{s:12.6,e:15.33,c:'k'},{s:15.33,e:16,c:'r'},{s:16,e:18.5,c:'s'},{s:18.5,e:20,c:'fade'}]},
+    {label:'Home bake',bars:[{s:12.5,e:13.5,c:'r'},{s:13.5,e:17},{s:17,e:18.5,c:'s'},{s:18.5,e:19,c:'r'},{s:19,e:20,c:'fade'}]}
+  ],[{h:12,l:'12pm'},{h:14,l:'2'},{h:16,l:'4'},{h:18,l:'6'},{h:20,l:'8pm'}]);
+  const lg=document.createElement('p');lg.className='rest';lg.style.marginTop='6px';
+  lg.textContent='Rust = mix / shape · Kraft = folds in the 80°F warm spot · Black = folds at 74°F · Steel = resting · Striped = fridge';
+  $('g-class').parentNode.after(lg);
+
+  // temperature bars (to scale, max 7h)
+  [['70°F / 21°C',7,'7h'],['74°F / 23°C',6,'6h'],['78°F / 26°C',5,'5h'],['80°F / 27°C',4.75,'4.5–5h']].forEach(([t,v,l])=>{
+    const d=document.createElement('div');d.className='tbar';
+    d.innerHTML='<span>'+t+'</span><div class="t"><div class="fill" style="width:'+(v/7*100)+'%">'+l+'</div></div>';
+    $('tbars').appendChild(d);
+  });
+
+  // storage
+  const KEY='bkloaf-guide-v1';
+  let state={name:'',starter:'',log:[{id:Date.now().toString(36),date:'2026-10-25',temp:'',bulk:'',rise:'',notes:''}]};
+  try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&Array.isArray(s.log))state=s;}catch(e){}
+  let tmr;
+  function save(){clearTimeout(tmr);tmr=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}},250);}
+
+  const fn=$('f-name'), fs=$('f-starter');
+  fn.value=state.name||''; fs.value=state.starter||'';
+  fn.oninput=()=>{state.name=fn.value;save()}; fs.oninput=()=>{state.starter=fs.value;save()};
+
+  function lot(d){if(!d)return 'LOT —';const [y,m,dd]=d.split('-');return 'LOT '+dd+'·'+m+'·'+y.slice(2);}
+  function prettyDate(d){if(!d)return'';const dt=new Date(d+'T12:00:00');return dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});}
+
+  function renderLog(){
+    const box=$('entries');box.innerHTML='';
+    if(!state.log.length){box.innerHTML='<div class="empty">No loaves logged yet. Tap “Add a loaf” after your next bake.</div>';return;}
+    state.log.forEach((e,idx)=>{
+      const card=document.createElement('div');card.className='entry';
+      const n=state.log.length-idx;
+      card.innerHTML=
+        '<div class="entry-head"><span class="lotno">'+lot(e.date)+' · LOAF '+pad(n)+'</span><button class="del" type="button">Remove</button></div>'+
+        '<div class="entry-body">'+
+        '<div class="field"><label for="d-'+e.id+'">Date</label><input type="date" id="d-'+e.id+'" data-k="date"></div>'+
+        '<div class="field"><label for="t-'+e.id+'">Kitchen °F</label><input inputmode="numeric" id="t-'+e.id+'" data-k="temp" placeholder="74"></div>'+
+        '<div class="field"><label for="b-'+e.id+'">Bulk time</label><input id="b-'+e.id+'" data-k="bulk" placeholder="6h"></div>'+
+        '<div class="field"><label for="r-'+e.id+'">Rise %</label><input inputmode="numeric" id="r-'+e.id+'" data-k="rise" placeholder="55"></div>'+
+        '<div class="field wide"><label for="n-'+e.id+'">Result / change next time</label><textarea rows="2" id="n-'+e.id+'" data-k="notes" placeholder="Crumb, crust, ear… and one thing to change"></textarea></div>'+
+        '</div>';
+      card.querySelectorAll('[data-k]').forEach(inp=>{
+        inp.value=e[inp.dataset.k]||'';
+        inp.addEventListener('input',()=>{e[inp.dataset.k]=inp.value;save();if(inp.dataset.k==='date')card.querySelector('.lotno').textContent=lot(e.date)+' · LOAF '+pad(n);});
+      });
+      const del=card.querySelector('.del');
+      del.onclick=()=>{
+        if(!del.classList.contains('arm')){del.classList.add('arm');del.textContent='Tap again to remove';setTimeout(()=>{del.classList.remove('arm');del.textContent='Remove'},3000);return;}
+        state.log.splice(idx,1);save();renderLog();
+      };
+      box.appendChild(card);
+    });
+  }
+  renderLog();
+
+  function toast(t){$('toast').textContent=t;setTimeout(()=>{$('toast').textContent=''},2500);}
+  $('add').onclick=()=>{
+    const today=new Date();const d=today.getFullYear()+'-'+pad(today.getMonth()+1)+'-'+pad(today.getDate());
+    state.log.unshift({id:Date.now().toString(36),date:d,temp:'',bulk:'',rise:'',notes:''});
+    save();renderLog();toast('New loaf added');
+    const first=document.querySelector('#entries input[data-k="temp"]');if(first)first.focus();
+  };
+  $('copy').onclick=()=>{
+    const lines=['BROOKLYN LOAF · MY LOAVES'+(state.name?' · '+state.name:'')+(state.starter?' · starter: '+state.starter:'')];
+    [...state.log].reverse().forEach((e,i)=>{
+      lines.push(lot(e.date)+' · '+prettyDate(e.date)+' · kitchen '+(e.temp||'?')+'°F · bulk '+(e.bulk||'?')+' · rise '+(e.rise||'?')+'%'+(e.notes?'\n  '+e.notes:''));
+    });
+    const txt=lines.join('\n');
+    const fallback=()=>{const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();toast(ok?'Log copied':'Copy blocked here. Select the entries and copy by hand.');};
+    try{navigator.clipboard.writeText(txt).then(()=>toast('Log copied. Paste it into your notes.'),fallback);}catch(e){fallback();}
+  };
+  // bakers sign-up (Netlify Forms)
+  const jf=$('join-form');
+  if(jf){
+    const jn=$('j-name'); if(!jn.value&&state.name) jn.value=state.name;
+    let joined=false; try{joined=localStorage.getItem('bkloaf-joined')==='1'}catch(e){}
+    if(joined){$('j-done').textContent='You\'re on the list.';}
+    jf.addEventListener('submit',e=>{
+      e.preventDefault();
+      const btn=$('j-btn');btn.disabled=true;$('j-done').textContent='Sending…';
+      fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(jf)).toString()})
+      .then(r=>{if(!r.ok)throw new Error(r.status);$('j-done').textContent='You\'re on the list. See you at the next bake.';jf.reset();if(state.name)jn.value=state.name;try{localStorage.setItem('bkloaf-joined','1')}catch(e){}})
+      .catch(()=>{$('j-done').textContent='That didn\'t send. Check your connection and try again.';})
+      .finally(()=>{btn.disabled=false;});
+    });
+    if(location.hash==='#join'){setTimeout(()=>{const f=leaves[N-1].querySelector('.front');const j=$('join');if(f&&j)f.scrollTop=j.offsetTop-20;},400);}
+  }
+})();
+</script>
+</body>
+</html>
